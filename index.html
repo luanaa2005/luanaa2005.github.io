@@ -636,19 +636,21 @@
         <article class="entry">
           <div class="entry-head">
             <span class="entry-name"><span class="path">exoterra/</span></span>
-            <span class="entry-status">pesquisa em andamento</span>
+            <span class="entry-status">iniciação científica — COSMOS × LaSE</span>
           </div>
-          <p class="entry-title">Visualização 3D de ambientes lunares — parceria LaSE × COSMOS</p>
+          <p class="entry-title">Simulador 3D de solo lunar deformável em tempo real</p>
           <div class="entry-body">
-            <p style="margin:0 0 0.9rem; color:var(--text-muted);">Pesquisa em visualização de terrenos lunares a partir de dados reais LRO/NASA:</p>
+            <p style="margin:0 0 0.9rem; color:var(--text-muted);">Plataforma de simulação para validar algoritmos de navegação autônoma de rovers lunares sob o Acordo Artemis. Responsável pela arquitetura geral do sistema, GUI e pipeline de visualização 3D:</p>
             <ul>
-              <li>Engine: Godot Engine com GDExtension em C++</li>
-              <li>Importação de malhas via glTF 2.0</li>
-              <li>Foco em representação fiel de topografia lunar para fins científicos</li>
+              <li>Loader paramétrico de modelos de rovers em glTF 2.0, com parser de metadados e articulações cinemáticas</li>
+              <li>Renderização de terreno a partir de mapas de elevação reais da missão LRO/NASA</li>
+              <li>Shaders para iluminação solar lunar (sem atmosfera, contraste crítico de superfície)</li>
+              <li>Deformação dinâmica contínua de malha (regolito) na GPU, integrando via GDExtension (C++) com a lib de física granular ExoPhysics</li>
+              <li>Meta de performance: Fator de Tempo Real (FTR) inferior a 1.0</li>
             </ul>
             <div class="stack-row">
               <span class="label">stack:</span>
-              <span class="tag">C++</span><span class="tag">Godot Engine</span><span class="tag">GDExtension</span><span class="tag">glTF 2.0</span>
+              <span class="tag">C++</span><span class="tag">Godot Engine</span><span class="tag">GDExtension</span><span class="tag">glTF 2.0</span><span class="tag">GPU/shaders</span>
             </div>
           </div>
         </article>

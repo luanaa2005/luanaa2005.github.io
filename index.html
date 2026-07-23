@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luana Carvalho — Engenharia de Software</title>
+<meta name="description" content="Luana Carvalho — Engenharia de Software na UnB. Robótica aérea autônoma (EDRA), pesquisa em sistemas espaciais (LaSE) e engenharia de dados (GovHub-br).">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0e14'/%3E%3Cpath d='M16 5 L25 24 L16 20 L7 24 Z' fill='%23ff4f00'/%3E%3C/svg%3E">
+<style>
+  @font-face {
+    font-family: 'Chakra Petch';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(./assets/fonts/chakra-400.woff2) format('woff2');
+  }
+  @font-face {
+    font-family: 'Chakra Petch';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url(./assets/fonts/chakra-600.woff2) format('woff2');
+  }
+  @font-face {
+    font-family: 'Chakra Petch';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url(./assets/fonts/chakra-700.woff2) format('woff2');
+  }
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url(./assets/fonts/plexsans-var.woff2) format('woff2');
+  }
+  @font-face {
+    font-family: 'IBM Plex Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(./assets/fonts/plexmono-400.woff2) format('woff2');
+  }
+  @font-face {
+    font-family: 'IBM Plex Mono';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(./assets/fonts/plexmono-500.woff2) format('woff2');
+  }
+
+  :root {
+    --bg: #0a0e14;
+    --bg-elevated: #12161f;
+    --bg-elevated-2: #181f2b;
+    --text: #e8e6e1;
+    --text-muted: #8b93a3;
+    --text-faint: #565f70;
+    --border: #232b3a;
+    --border-strong: #33405a;
+    --accent: #ff4f00;
+    --accent-bright: #ff7a3d;
+    --accent-dim: #c93e00;
+    --accent-on: #0a0e14;
+    --focus: #ff8a4d;
+    --font-display: 'Chakra Petch', 'Arial Narrow', sans-serif;
+    --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+    color-scheme: dark;
+  }
+
+  :root[data-theme="light"] {
+    --bg: #f5f2ea;
+    --bg-elevated: #fffefb;
+    --bg-elevated-2: #ece7d9;
+    --text: #171510;
+    --text-muted: #5c584c;
+    --text-faint: #948d7a;
+    --border: #ddd6c3;
+    --border-strong: #c7bc9e;
+    --accent: #d84600;
+    --accent-bright: #ff4f00;
+    --accent-dim: #a83600;
+    --accent-on: #fffefb;
+    --focus: #a83600;
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f5f2ea;
+      --bg-elevated: #fffefb;
+      --bg-elevated-2: #ece7d9;
+      --text: #171510;
+      --text-muted: #5c584c;
+      --text-faint: #948d7a;
+      --border: #ddd6c3;
+      --border-strong: #c7bc9e;
+      --accent: #d84600;
+      --accent-bright: #ff4f00;
+      --accent-dim: #a83600;
+      --accent-on: #fffefb;
+      --focus: #a83600;
+      color-scheme: light;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent-bright); }
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* ---------- background texture ---------- */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 64px 64px;
+    opacity: 0.35;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
+  }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 0;
+  }
+  .logo {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .logo b { color: var(--accent-bright); font-weight: 500; }
+  nav.primary {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+  }
+  nav.primary a {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  nav.primary a:hover { color: var(--accent-bright); }
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border: 1px solid var(--border-strong);
+    padding: 0.3rem 0.6rem;
+  }
+  .status-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 rgba(255,79,0,0.5);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,79,0,0.45); }
+    50% { box-shadow: 0 0 0 5px rgba(255,79,0,0); }
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding: 4.5rem 0 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--accent-bright);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0 0 1.1rem;
+  }
+  .eyebrow::before { content: '>'; color: var(--text-faint); }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.6rem, 5vw + 1rem, 4.4rem);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    margin: 0 0 1.1rem;
+    text-wrap: balance;
+    max-width: 14ch;
+  }
+  .hero-lede {
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    max-width: 56ch;
+    margin: 0 0 2rem;
+  }
+  .hero-lede b { color: var(--text); font-weight: 500; }
+
+  .roles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0 0 2.25rem;
+    padding: 0;
+    list-style: none;
+  }
+  .roles li {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    padding: 0.4rem 0.7rem;
+    border: 1px solid var(--border-strong);
+    color: var(--text-muted);
+  }
+  .roles li b { color: var(--text); font-weight: 500; }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.6rem 2.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-faint);
+    border-top: 1px solid var(--border);
+    padding-top: 1.2rem;
+  }
+  .hero-meta span b { color: var(--text-muted); font-weight: 500; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.7rem 1.1rem;
+    background: var(--accent);
+    color: var(--accent-on);
+    border: 1px solid var(--accent);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .btn:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+  .btn.ghost {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+  .btn.ghost:hover { border-color: var(--accent); color: var(--accent-bright); }
+  .btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.4rem; }
+
+  /* ---------- section shell ---------- */
+  section { padding: 4rem 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+  .section-head { margin-bottom: 2.5rem; }
+  .section-head .eyebrow { margin-bottom: 0.6rem; }
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.9rem;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  /* ---------- mission log (projects) ---------- */
+  .log {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .log::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 10px;
+    bottom: 10px;
+    width: 1px;
+    background: var(--border-strong);
+  }
+  .entry {
+    position: relative;
+    padding: 0 0 2.75rem 2.25rem;
+  }
+  .entry:last-child { padding-bottom: 0; }
+  .entry::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.4rem;
+    width: 11px;
+    height: 11px;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+  }
+  .entry-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    margin-bottom: 0.4rem;
+  }
+  .entry-name {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 1.05rem;
+    color: var(--text);
+  }
+  .entry-name .path { color: var(--accent-bright); }
+  .entry-status {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    white-space: nowrap;
+  }
+  .entry-title {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin: 0 0 0.9rem;
+  }
+  .entry-body {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    padding: 1.25rem 1.4rem;
+  }
+  .entry-body ul {
+    margin: 0 0 1rem;
+    padding-left: 1.1rem;
+  }
+  .entry-body li { margin-bottom: 0.45rem; color: var(--text); }
+  .entry-body li:last-child { margin-bottom: 0; }
+  .entry-body li::marker { color: var(--accent-bright); }
+  .stack-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+    padding-top: 0.9rem;
+    margin-top: 0.9rem;
+    border-top: 1px dashed var(--border-strong);
+  }
+  .stack-row .label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+    margin-right: 0.3rem;
+  }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    background: var(--bg-elevated-2);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.5rem;
+  }
+  .entry-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent-bright);
+    text-decoration: none;
+  }
+  .entry-link:hover { text-decoration: underline; }
+  .entry-link::after { content: '↗'; }
+
+  /* ---------- about / loadout ---------- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 3rem;
+  }
+  .about-grid p { color: var(--text-muted); max-width: 60ch; }
+  .about-grid p b { color: var(--text); font-weight: 500; }
+  .loadout dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.6rem 1rem;
+    margin: 0 0 1.75rem;
+  }
+  .loadout dt {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    padding-top: 0.15rem;
+    white-space: nowrap;
+  }
+  .loadout dd {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .now-box {
+    border: 1px solid var(--border);
+    background: var(--bg-elevated);
+    padding: 1.1rem 1.3rem;
+  }
+  .now-box .eyebrow { font-size: 0.72rem; margin-bottom: 0.8rem; }
+  .now-box ul { margin: 0; padding-left: 1.1rem; }
+  .now-box li { color: var(--text-muted); font-size: 0.92rem; margin-bottom: 0.4rem; }
+  .now-box li::marker { color: var(--accent-bright); }
+  .now-box li:last-child { margin-bottom: 0; }
+
+  @media (max-width: 760px) {
+    .about-grid { grid-template-columns: 1fr; gap: 2.25rem; }
+    nav.primary { display: none; }
+  }
+
+  /* ---------- footer ---------- */
+  footer { padding: 3.5rem 0 4rem; }
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+  }
+  .footer-quote {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-faint);
+    max-width: 40ch;
+  }
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+  .footer-links a {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .footer-links a:hover { color: var(--accent-bright); }
+</style>
+</head>
+<body>
+<div class="grid-bg" aria-hidden="true"></div>
+
+<header>
+  <div class="wrap header-inner">
+    <a href="#top" class="logo">LUANA<b>_</b>CARVALHO</a>
+    <nav class="primary" aria-label="Navegação principal">
+      <a href="#projetos">Projetos</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <span class="status-pill"><span class="status-dot" aria-hidden="true"></span>em órbita de projetos</span>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">whoami</p>
+      <h1>Software para voar, medir e decidir.</h1>
+      <p class="hero-lede">
+        Estudante de <b>Engenharia de Software na UnB</b>, atuando em três frentes:
+        robótica aérea autônoma, pesquisa em sistemas espaciais e engenharia de dados.
+      </p>
+      <ul class="roles">
+        <li><b>EDRA</b> — Equipe de Robótica Aérea da UnB</li>
+        <li><b>LaSE</b> — Laboratório de Sistemas Espaciais</li>
+        <li><b>GovHub-br</b> — engenharia de dados públicos</li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn" href="#projetos">Ver projetos</a>
+        <a class="btn ghost" href="https://github.com/luanaa2005" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+      <div class="hero-meta">
+        <span><b>Local</b> — Brasília, DF · Brasil</span>
+        <span><b>Foco atual</b> — odometria com LiDAR, arquitetura de software aeroespacial</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="projetos">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">cd projects/ &amp;&amp; ls</p>
+        <h2>Registro de missões</h2>
+      </div>
+
+      <div class="log">
+        <article class="entry">
+          <div class="entry-head">
+            <span class="entry-name"><span class="path">edra/</span></span>
+            <span class="entry-status">status: ativo</span>
+          </div>
+          <p class="entry-title">Autonomia de VANTs para competições (CBR, SAE BRASIL)</p>
+          <div class="entry-body">
+            <p style="margin:0 0 0.9rem; color:var(--text-muted);">Software de missão para drones autônomos, cobrindo detecção, decisão e execução:</p>
+            <ul>
+              <li>Detecção por visão computacional (YOLO + OpenCV + PiCamera2) com suavização temporal e thresholds de confiança em cascata</li>
+              <li>Árvores de comportamento com py_trees integradas a ROS2</li>
+              <li>Simulação em PX4 + Gazebo Harmonic, incluindo scripts de missão e controlador PD para manobras específicas</li>
+              <li>Diagnóstico embarcado: comunicação Raspberry Pi ↔ estação em solo via HTTP</li>
+            </ul>
+            <div class="stack-row">
+              <span class="label">stack:</span>
+              <span class="tag">ROS2</span><span class="tag">PX4</span><span class="tag">Gazebo</span>
+              <span class="tag">py_trees</span><span class="tag">YOLO</span><span class="tag">OpenCV</span><span class="tag">Docker</span>
+            </div>
+            <a class="entry-link" href="https://github.com/luanaa2005/controle_e_sistemas_embarcados" target="_blank" rel="noopener">ver repositório</a>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="entry-head">
+            <span class="entry-name"><span class="path">lase-microthrust-balance/</span></span>
+            <span class="entry-status">apresentado — XI ReLaCa ESPACIO</span>
+          </div>
+          <p class="entry-title">Bancada de medição de microempuxo</p>
+          <div class="entry-body">
+            <p style="margin:0 0 0.9rem; color:var(--text-muted);">Arquitetura de software para bancada de testes de microempuxo, usada por pesquisadores não necessariamente de software:</p>
+            <ul>
+              <li>Interface Streamlit com 3 módulos: calibração, aquisição e análise</li>
+              <li>Processamento de sinal: FFT, filtro Butterworth, Kalman + Digital Twin</li>
+              <li>Restrições reais de laboratório: operação offline, limite de segurança de 1000V, uso em máquina Windows compartilhada</li>
+              <li>Artigo submetido ao IAC 2026</li>
+            </ul>
+            <div class="stack-row">
+              <span class="label">stack:</span>
+              <span class="tag">Python</span><span class="tag">Streamlit</span><span class="tag">NumPy/SciPy</span>
+            </div>
+            <a class="entry-link" href="https://github.com/luanaa2005/Balanca-de-microempuxo-UnB" target="_blank" rel="noopener">ver repositório</a>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="entry-head">
+            <span class="entry-name"><span class="path">exoterra/</span></span>
+            <span class="entry-status">pesquisa em andamento</span>
+          </div>
+          <p class="entry-title">Visualização 3D de ambientes lunares — parceria LaSE × COSMOS</p>
+          <div class="entry-body">
+            <p style="margin:0 0 0.9rem; color:var(--text-muted);">Pesquisa em visualização de terrenos lunares a partir de dados reais LRO/NASA:</p>
+            <ul>
+              <li>Engine: Godot Engine com GDExtension em C++</li>
+              <li>Importação de malhas via glTF 2.0</li>
+              <li>Foco em representação fiel de topografia lunar para fins científicos</li>
+            </ul>
+            <div class="stack-row">
+              <span class="label">stack:</span>
+              <span class="tag">C++</span><span class="tag">Godot Engine</span><span class="tag">GDExtension</span><span class="tag">glTF 2.0</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="entry-head">
+            <span class="entry-name"><span class="path">govhub-br/</span></span>
+            <span class="entry-status">status: ativo</span>
+          </div>
+          <p class="entry-title">Engenharia de dados para dados públicos</p>
+          <div class="entry-body">
+            <p style="margin:0 0 0.9rem; color:var(--text-muted);">DAGs de ingestão de dados governamentais no Apache Airflow:</p>
+            <ul>
+              <li>Ingestão de dados e validação explícita de schema por tabela</li>
+              <li>Debugging de casos reais: BOM em CSVs do governo, BadZipFile, schemas divergentes</li>
+            </ul>
+            <div class="stack-row">
+              <span class="label">stack:</span>
+              <span class="tag">Apache Airflow</span><span class="tag">PostgreSQL</span><span class="tag">Python</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre">
+    <div class="wrap about-grid">
+      <div>
+        <div class="section-head">
+          <p class="eyebrow">cat sobre.md</p>
+          <h2>Sobre</h2>
+        </div>
+        <p>
+          Trabalho na fronteira entre <b>software e hardware real</b>: código que precisa decidir em
+          voo, medir sinais físicos com ruído de laboratório, ou lidar com dados públicos bagunçados.
+          Gosto de projetos onde o software não é o produto final, mas a camada que faz um sistema
+          físico funcionar de verdade — um drone, uma bancada de sensores, um satélite simulado.
+        </p>
+        <p>
+          Atualmente dividindo o tempo entre a <b>EDRA</b> (competições de VANTs autônomos), o
+          <b>LaSE</b> (pesquisa em sistemas espaciais) e o <b>GovHub-br</b> (dados públicos).
+        </p>
+      </div>
+      <div class="loadout">
+        <dl>
+          <dt>Linguagens</dt>
+          <dd>Python · C++ · TypeScript · C</dd>
+          <dt>Robótica / Sim.</dt>
+          <dd>ROS2 · PX4 · Gazebo · py_trees</dd>
+          <dt>Dados</dt>
+          <dd>Apache Airflow · PostgreSQL · Streamlit</dd>
+          <dt>Outros</dt>
+          <dd>Docker · Godot Engine · OpenCV</dd>
+        </dl>
+        <div class="now-box">
+          <p class="eyebrow" style="margin-bottom:0.6rem;">cat now.md</p>
+          <ul>
+            <li>ICP (Iterative Closest Point) para odometria com LiDAR</li>
+            <li>Arquitetura de software para sistemas aeroespaciais</li>
+            <li>Godot Engine + GDExtension para visualização científica</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contato">
+  <div class="wrap footer-inner">
+    <p class="footer-quote">"building systems that go beyond the ground"</p>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/luana-carvalho-de-almeida-134877234" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="https://github.com/luanaa2005" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

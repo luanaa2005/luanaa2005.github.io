@@ -422,6 +422,39 @@
   .entry-link:hover { text-decoration: underline; }
   .entry-link::after { content: '↗'; }
 
+  .pubs {
+    margin: 0;
+    padding-left: 1.1rem;
+    list-style: none;
+  }
+  .pubs li {
+    position: relative;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+  .pubs li:last-child { margin-bottom: 0; }
+  .pubs li::before {
+    content: '»';
+    position: absolute;
+    left: -1.1rem;
+    color: var(--accent-bright);
+  }
+  .pub-venue {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    color: var(--accent-bright);
+    background: var(--bg-elevated-2);
+    border: 1px solid var(--border);
+    padding: 0.1rem 0.4rem;
+    margin-right: 0.5rem;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
   /* ---------- about / loadout ---------- */
   .about-grid {
     display: grid;
@@ -572,17 +605,26 @@
         <article class="entry">
           <div class="entry-head">
             <span class="entry-name"><span class="path">lase-microthrust-balance/</span></span>
-            <span class="entry-status">apresentado — XI ReLaCa ESPACIO</span>
+            <span class="entry-status">2 publicações — ReLaCa · IAC 2026</span>
           </div>
-          <p class="entry-title">Bancada de medição de microempuxo</p>
+          <p class="entry-title">Arquitetura de software para bancada de medição de microempuxo</p>
           <div class="entry-body">
-            <p style="margin:0 0 0.9rem; color:var(--text-muted);">Arquitetura de software para bancada de testes de microempuxo, usada por pesquisadores não necessariamente de software:</p>
+            <p style="margin:0 0 0.9rem; color:var(--text-muted);">Pipeline de automação metrológica em Python para bancadas de microempuxo (µN) usadas na caracterização de propulsores elétricos para nanosatélites — usado por pesquisadores não necessariamente de software:</p>
             <ul>
-              <li>Interface Streamlit com 3 módulos: calibração, aquisição e análise</li>
-              <li>Processamento de sinal: FFT, filtro Butterworth, Kalman + Digital Twin</li>
-              <li>Restrições reais de laboratório: operação offline, limite de segurança de 1000V, uso em máquina Windows compartilhada</li>
-              <li>Artigo submetido ao IAC 2026</li>
+              <li>Análise espectral via FFT para identificar as frequências naturais da estrutura</li>
+              <li>Filtro Butterworth de 5ª ordem (zero-phase) + Filtro de Kalman sintonizado via Gêmeo Digital</li>
+              <li>Gestão metrológica de incerteza conforme o GUM, com rastreabilidade completa dos parâmetros</li>
+              <li>Calibração eletrostática automática in situ (ECD) — elimina erros de massa adicionada e atrito</li>
+              <li>Detecção de anomalias em tempo real por análise de resíduos</li>
+              <li>Interface Streamlit: telemetria + geração automática de relatórios em PDF</li>
             </ul>
+            <div class="stack-row" style="display:block;">
+              <span class="label" style="display:block; margin-bottom:0.6rem;">publicações:</span>
+              <ul class="pubs">
+                <li><span class="pub-venue">XI ReLaCa ESPACIO</span>Arquitetura de Software Integrada para Automação Metrológica e Tratamento de Ruídos em Bancadas de Microempuxo — 1ª autora</li>
+                <li><span class="pub-venue">IAC 2026</span>Integrated Software Architecture for Autonomous Metrology, Real-Time Signal Processing, and Anomaly Detection in Micro-Newton Thrust Stands — 1ª autora, IAF Space Propulsion Symposium</li>
+              </ul>
+            </div>
             <div class="stack-row">
               <span class="label">stack:</span>
               <span class="tag">Python</span><span class="tag">Streamlit</span><span class="tag">NumPy/SciPy</span>
